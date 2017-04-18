@@ -153,6 +153,7 @@ protocol Profile: class {
     var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage { get }
     var certStore: CertStore { get }
     var recentlyClosedTabs: ClosedTabsStore { get }
+    var panelDataObservers: PanelDataObservers { get }
 
     var isShutdown: Bool { get }
     
@@ -408,6 +409,10 @@ open class BrowserProfile: Profile {
     var history: BrowserHistory & SyncableHistory & ResettableSyncStorage {
         return self.places
     }
+
+    lazy var panelDataObservers: PanelDataObservers = {
+        return PanelDataObservers(profile: self)
+    }()
 
     lazy var metadata: Metadata = {
         return SQLiteMetadata(db: self.db)
